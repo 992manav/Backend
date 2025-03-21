@@ -221,7 +221,7 @@ export const loginDoctor = async (req, res) => {
     }
 
     const doctor = await Doctor.findOne({ licenseNumber });
-    console.log("first", password, doctor.password);
+    //console.log("first", password, doctor.password);
 
     if (!doctor) {
       return res.status(404).json({
