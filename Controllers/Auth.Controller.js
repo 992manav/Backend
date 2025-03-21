@@ -157,17 +157,17 @@ const loginPatient = async (req, res) => {
 export const getprofile = async (req, res) => {
   //console.log(req.user)
   try {
-      const patient = await Patient.findById(req.user);
-      if (!patient) {
-          return res.status(404).json({ message: 'Patient not found' });
-      }
-      console.log()
-      res.status(200).json(patient);
+    const patient = await Patient.findById(req.user);
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+    console.log();
+    res.status(200).json(patient);
   } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Something went wrong' });
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
-}
+};
 
 export const registerDoctor = async (req, res) => {
   const {
@@ -221,7 +221,7 @@ export const loginDoctor = async (req, res) => {
     }
 
     const doctor = await Doctor.findOne({ licenseNumber });
-    console.log("first", password, doctor.password);
+    console.log("first", password, doctor?.password);
 
     if (!doctor) {
       return res.status(404).json({

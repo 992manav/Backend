@@ -2,43 +2,45 @@ import { Report } from "../Models/Report.Model.js";
 import { Doctor } from "../Models/Doctor.Model.js";
 import { Patient } from "../Models/Patient.Model.js";
 
- async function getReportbyUser(req, res) {
-    try {
-        const reports = await Report.find({ patient: req.user._id }).populate("doctor");
-        res.status(200).json(reports);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
-    }
-};
+async function getReportbyUser(req, res) {
+  try {
+    const reports = await Report.find({ patient: req.user._id }).populate(
+      "doctor"
+    );
+    res.status(200).json(reports);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+}
 
 async function setDetails(req, res) {
-    try {
-        const {reportId} = req.params;
-        console.log(reportId)
-        const report = await Report.findById(reportId);
-        console.log(report)
-        if (!report) {
-            return res.status(404).json({
-                success: false,
-                message: "Report not found.",
-            });
-        }
-        report.medications = req.body.medications;
-        report.diagnosis = req.body.diagnosis;
-        await report.save();
-        res.status(200).json({
-            success: true,
-            message: "Report updated successfully.",
-            report,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to update report.",
-            error: error.message,
-        });
+  try {
+    const { reportId } = req.params;
+    console.log(reportId);
+    const report = await Report.findById(reportId);
+    console.log(report);
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Report not found.",
+      });
     }
+    report.medications = req.body.medications;
+    report.diagnosis = req.body.diagnosis;
+    await report.save();
+    res.status(200).json({
+      success: true,
+      message: "Report updated successfully.",
+      report,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update report.",
+      error: error.message,
+    });
+  }
 }
 // Save first report (POST request)
 async function setFirstReport(req, res) {
@@ -82,10 +84,10 @@ async function setFirstReport(req, res) {
 }
 
 async function getpatients(req, res) {
-    const user = req.user;
-    console.log("karanwal",user)
+  const user = req.user;
+  console.log(user);
   try {
-    const report = await Report.find({doctor:user._id}).populate("patient");
+    const report = await Report.find({ doctor: user._id }).populate("patient");
     res.status(200).json({
       success: true,
       report,
@@ -102,7 +104,7 @@ async function getpatients(req, res) {
 async function getReport(req, res) {
   try {
     const { reportId } = req.params;
-    console.log(reportId)
+    console.log(reportId);
     const report = await Report.findById(reportId).populate("doctor patient");
 
     if (!report) {
@@ -126,4 +128,4 @@ async function getReport(req, res) {
 }
 
 // Export function
-export { setFirstReport, getReport,setDetails, getReportbyUser, getpatients };
+export { setFirstReport, getReport, setDetails, getReportbyUser, getpatients };
