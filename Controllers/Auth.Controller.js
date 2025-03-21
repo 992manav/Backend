@@ -188,7 +188,7 @@ export const registerDoctor = async (req, res) => {
     if (existingDoctor) {
       return res.status(400).json({ message: "Doctor already exists" });
     }
-
+    const loweCaseSpeciality = speciality.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newDoctor = new Doctor({
@@ -199,7 +199,7 @@ export const registerDoctor = async (req, res) => {
       email,
       profilePicture,
       licenseNumber,
-      speciality,
+      speciality: loweCaseSpeciality,
       password: hashedPassword,
     });
     await newDoctor.save();

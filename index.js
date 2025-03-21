@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import connectDB from "./Utils/db.js";
 import authRoutes from "./Routes/User.Routes.js";
+import reportRoutes from "./Routes/Report.Routes.js";
+
 
 const app = express();
 dotenv.config();
@@ -32,9 +34,12 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.options("*", cors());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/report", reportRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
