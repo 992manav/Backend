@@ -1,4 +1,4 @@
-import { Doctor } from "../Models/Doctor.Model";
+import { Doctor } from "../Models/Doctor.Model.js";
 
 //All docs
 async function getAllDoctors(req, res) {
