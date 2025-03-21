@@ -4,12 +4,12 @@ import {
   getAllDomainDoctors,
   getCurrentDoctor,
 } from "../Controllers/Doctor.Controller.js";
-import { verifyDoctorToken } from "../Utils/Token.middleware.js";
+import { verifyDoctorToken } from "../Utils/Token.Middleware.js";
 
 const router = express.Router();
 
 router.route("/getalldoctors").get(getAllDoctors);
 router.route("/getallDomaindoctors").get(getAllDomainDoctors);
-router.route("/getcurrentdoctor").get(verifyDoctorToken,getCurrentDoctor);
+router.route("/getcurrentdoctor").get(verifyDoctorToken, getCurrentDoctor);
 
 export default router;
