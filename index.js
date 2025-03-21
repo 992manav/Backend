@@ -8,6 +8,7 @@ import authRoutes from "./Routes/User.Routes.js";
 import doctorRoutes from "./Routes/Doctor.Routes.js";
 import reportRoutes from "./Routes/Report.Routes.js";
 import patientRoutes from "./Routes/Patient.Routes.js";
+import communityRoutes from "./Routes/Community.Routes.js";
 
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/doctor", doctorRoutes);
 app.use("/api/report", reportRoutes);
 app.use("/api/patient", patientRoutes);
+app.use("/api/community", communityRoutes);
 
 
 app.listen(PORT, () => {
