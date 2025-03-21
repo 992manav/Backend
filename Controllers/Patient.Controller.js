@@ -48,5 +48,19 @@ async function setMedicalRecord(req, res) {
   }
 }
 
+async function getPatient(req,res) {
+  try {
+    const patient = await Patient.findOne({ name : req.body.name });
+    console.log(patient)
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+    res.status(200).json(patient);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+}
+
 // Export the function to be used in routes
-export { setMedicalRecord };
+export { setMedicalRecord,getPatient };
