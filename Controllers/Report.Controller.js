@@ -83,7 +83,7 @@ async function setFirstReport(req, res) {
   }
 }
 
-async function getpatients(req, res) {
+async function getreports(req, res) {
   const user = req.user;
   console.log(user);
   try {
@@ -127,5 +127,70 @@ async function getReport(req, res) {
   }
 }
 
+async function sendDiagnosis(req, res) {
+  try {
+    const { reportID, message } = req.body;
+
+    const updatedReport = await Report.findByIdAndUpdate(reportID, {
+      diagnosis: message,
+    });
+
+    if (!updatedReport) {
+      return res.status(404).json({ error: "Report not found" });
+    }
+
+    res.json({ message: "Diagnosis updated successfully", updatedReport });
+  } catch (error) {
+    console.error("Error updating diagnosis:", error);
+    res.status(500).json({ error: "Failed to update diagnosis" });
+  }
+}
+
+async function sendSuggestion(req, res) {
+  try {
+    const { reportID, message } = req.body;
+
+    const updatedReport = await Report.findByIdAndUpdate(reportID, {
+      suggestions: message,
+    });
+
+    if (!updatedReport) {
+      return res.status(404).json({ error: "Report not found" });
+    }
+
+    res.json({ message: "Suggestion updated successfully", updatedReport });
+  } catch (error) {
+    console.error("Error updating suggestion:", error);
+    res.status(500).json({ error: "Failed to update suggestion" });
+  }
+}
+
+async function sendPrescription(req, res) {
+  try {
+    const { reportID, message } = req.body;
+
+    const updatedReport = await Report.findByIdAndUpdate(reportID, {
+      $push: { medications: message },
+    });
+
+    if (!updatedReport) {
+      return res.status(404).json({ error: "Report not found" });
+    }
+
+    res.json({ message: "Prescription updated successfully", updatedReport });
+  } catch (error) {
+    console.error("Error updating prescription:", error);
+    res.status(500).json({ error: "Failed to update prescription" });
+  }
+}
 // Export function
-export { setFirstReport, getReport, setDetails, getReportbyUser, getpatients };
+export {
+  setFirstReport,
+  getReport,
+  setDetails,
+  getReportbyUser,
+  getreports,
+  sendDiagnosis,
+  sendSuggestion,
+  sendPrescription,
+};

@@ -1,17 +1,30 @@
 import express from "express";
-import { setFirstReport, getReport, getReportbyUser, getpatients, setDetails } from "../Controllers/Report.Controller.js"; // Fixed function name
-import { verifyPatientToken,verifyDoctorToken } from "../Utils/Token.Middleware.js";
+import {
+  setFirstReport,
+  getReport,
+  getReportbyUser,
+  getreports,
+  setDetails,
+  sendDiagnosis,
+  sendSuggestion,
+  sendPrescription,
+} from "../Controllers/Report.Controller.js"; // Fixed function name
+import {
+  verifyPatientToken,
+  verifyDoctorToken,
+} from "../Utils/Token.Middleware.js";
 
 const router = express.Router();
 
-router.get("/getreportbyuser",verifyPatientToken, getReportbyUser);
-router.get("/getpatients",verifyDoctorToken, getpatients)
-router.post("/setdetails/:reportId",setDetails);
+router.get("/getreportbyuser", verifyPatientToken, getReportbyUser);
+router.get("/getreports", verifyDoctorToken, getreports);
+router.post("/setdetails/:reportId", setDetails);
 router.post("/setFirstreport", verifyPatientToken, setFirstReport);
 router.get("/getreport/:reportId", verifyPatientToken, getReport);
 router.get("/getreportdoctor/:reportId", verifyDoctorToken, getReport);
 
-// (Optional) Define a GET route if needed
-// router.get("/getalldoctors", getAllDoctors);
+router.post("/send-diagnosis", verifyDoctorToken, sendDiagnosis);
+router.post("/send-suggestion", verifyDoctorToken, sendSuggestion);
+router.post("/send-prescription", verifyDoctorToken, sendPrescription);
 
 export default router;
