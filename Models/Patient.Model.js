@@ -46,6 +46,10 @@ const PatientSchema = new Schema({
   medicalHistory: {
     type: String,
   },
+  faceDescriptor: {
+    type: [Number],
+    default: [],
+  },
 });
 
 export const Patient = mongoose.model("Patient", PatientSchema);

@@ -42,6 +42,7 @@ const registerPatient = async (req, res) => {
       blood_group,
       allergies,
       gender,
+      faceDescriptor,
     } = req.body;
 
     if (
@@ -83,6 +84,7 @@ const registerPatient = async (req, res) => {
       blood_group: blood_group,
       allergies: allergies,
       gender: gender,
+      faceDescriptor: faceDescriptor,
     });
 
     const createdPatient = await Patient.findById(patient._id);

@@ -130,6 +130,7 @@ async function getReport(req, res) {
 async function sendDiagnosis(req, res) {
   try {
     const { reportID, message } = req.body;
+    console.log(reportID, message);
 
     const updatedReport = await Report.findByIdAndUpdate(reportID, {
       diagnosis: message,

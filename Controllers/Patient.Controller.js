@@ -1,5 +1,6 @@
 import { Patient } from "../Models/Patient.Model.js";
 import { Report } from "../Models/Report.Model.js";
+import * as faceapi from "face-api.js";
 
 // ✅ Set or update the medical history for a specific patient by ID
 const setMedicalRecord = async (req, res) => {
@@ -97,5 +98,74 @@ async function getPatient(req, res) {
   }
 }
 
+async function searchByFace(req, res) {
+  try {
+    const { faceDescriptor } = req.body;
+
+    if (!faceDescriptor) {
+      return res.status(400).json({ message: "Face descriptor is required" });
+    }
+
+    // Fetch patients with face descriptors
+    const patients = await Patient.find({ faceDescriptor: { $exists: true } });
+
+    if (!patients.length) {
+      return res
+        .status(404)
+        .json({ message: "No patients with face descriptors found" });
+    }
+
+    // Create labeled descriptors
+    const labeledDescriptors = patients.map((patient) => {
+      return new faceapi.LabeledFaceDescriptors(patient._id.toString(), [
+        new Float32Array(patient.faceDescriptor),
+      ]);
+    });
+
+    // Initialize FaceMatcher
+    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.6);
+
+    // Find the best match
+    const bestMatch = faceMatcher.findBestMatch(
+      new Float32Array(faceDescriptor)
+    );
+
+    if (bestMatch.label === "unknown") {
+      return res.status(404).json({ message: "No matching patient found" });
+    }
+
+    // Retrieve matched patient details
+    const matchedPatient = patients.find(
+      (patient) => patient._id.toString() === bestMatch.label
+    );
+
+    res.json({
+      ...matchedPatient._doc,
+      matchConfidence: 1 - Math.min(bestMatch.distance, 1),
+    });
+  } catch (err) {
+    console.error("Face search error:", err);
+    res.status(500).json({ message: "Face search failed" });
+  }
+}
+
+const getLabeledDescriptors = async (req, res) => {
+  try {
+    // Find patients with a stored face descriptor
+    const patients = await Patient.find({ faceDescriptor: { $exists: true } });
+
+    // Map patients to an object containing a label and the descriptor
+    const labeledDescriptors = patients.map((patient) => ({
+      label: patient.name, // or another unique identifier
+      faceDescriptor: patient.faceDescriptor,
+    }));
+
+    res.json(labeledDescriptors);
+  } catch (err) {
+    console.error("Error fetching labeled descriptors:", err);
+    res.status(500).json({ message: "Failed to fetch labeled descriptors" });
+  }
+};
+
 // Export the function to be used in routes
-export { setMedicalRecord, getPatient, getPatientById };
+export { setMedicalRecord, getPatient, getPatientById, searchByFace , getLabeledDescriptors};
