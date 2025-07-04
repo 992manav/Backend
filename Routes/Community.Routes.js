@@ -3,7 +3,7 @@ import {
   getDiscussionsByCommunity,
   setNewDisussion,
 } from "../Controllers/Community.Controller.js";
-import { verifyPatientToken } from "../Utils/Token.middleware.js";
+import { verifyPatientToken } from "../Utils/Token.Middleware.js";
 
 const router = express.Router();
 
@@ -12,5 +12,6 @@ router.get("/getcommunitydiscussion/:communityName", getDiscussionsByCommunity);
 router.post(
   "/addnewdiscussion/:communityName",
   verifyPatientToken,
-  setNewDisussion);
+  setNewDisussion
+);
 export default router;
