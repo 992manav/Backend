@@ -27,7 +27,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://frontend-c5b3.onrender.com/",
+  "https://frontend-c5b3.onrender.com",
 ];
 
 app.use(
